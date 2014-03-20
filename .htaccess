@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteBase /kodexy
+
+#Re-route requests to the bootstrap file unless the request is for an existing directory or file.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule (.*) index.php?q=$1 [L]

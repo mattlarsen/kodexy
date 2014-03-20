@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS `posts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(128) NOT NULL,
+  `body` text NOT NULL,
+  `posted` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+INSERT INTO `posts` (`id`, `title`, `body`, `posted`) VALUES
+(1, 'First Post', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sit amet pretium nulla, eu ultrices sem. In pharetra urna at neque bibendum, vitae sodales turpis fringilla. Vivamus eu ultrices lectus. Duis imperdiet rutrum risus eget ultrices. Pellentesque condimentum lacinia felis, malesuada pharetra sem venenatis vel. In volutpat sodales lacinia. Suspendisse potenti. ', '2013-12-13 13:23:16'),
+(2, 'Second Post', 'Maecenas volutpat placerat eros elementum adipiscing. Suspendisse potenti. In dapibus volutpat tortor sed mollis. Praesent et est elit. Nulla facilisi. Phasellus eu nunc nec augue convallis elementum. Phasellus blandit interdum tellus, ac lacinia nibh volutpat sit amet. Donec congue consectetur tortor. Nulla facilisi. Donec cursus dictum nisi id mattis. Aliquam ligula mauris, congue ut lacinia a, interdum ac leo. Cras mollis tortor et pretium sagittis. Curabitur in erat ut ligula lobortis scelerisque. In porttitor tincidunt dui, in bibendum magna dictum quis. ', '2013-12-14 17:14:47'),
+(3, 'Third Post', 'Interdum et malesuada fames ac ante ipsum primis in faucibus. Proin augue nisl, sodales non vehicula eget, consectetur eget magna. Nulla sodales est id augue facilisis cursus non ac magna. Maecenas in orci consectetur, laoreet nisl sit amet, semper dui. Mauris cursus, orci a scelerisque vulputate, sapien dolor pulvinar massa, ut viverra metus massa sit amet est.', '2013-12-15 11:19:14'),
+(4, 'Fourth Post', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ac nisi fringilla magna interdum mollis ac nec risus. Integer feugiat turpis vel erat varius euismod. Phasellus pretium, velit a congue posuere, tortor sem iaculis purus, quis congue nunc purus nec dui. Ut ac mauris pretium, elementum quam vel, lacinia tortor. Vivamus condimentum elit massa, quis posuere tellus commodo id. Suspendisse potenti. Sed sit amet volutpat est. ', '2013-12-16 12:13:00'),
+(5, 'Fifth Post', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ac nisi fringilla magna interdum mollis ac nec risus. Integer feugiat turpis vel erat varius euismod.\r\n\r\nPhasellus pretium, velit a congue posuere, tortor sem iaculis purus, quis congue nunc purus nec dui. Ut ac mauris pretium, elementum quam vel, lacinia tortor. Vivamus condimentum elit massa, quis posuere tellus commodo id. Suspendisse potenti. Sed sit amet volutpat est. ', '2014-01-02 13:40:39');

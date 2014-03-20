@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>Kodexy v0.8.1 Documentation</title>
+</head>
+<body>
+
+<style type="text/css">
+body {
+	font-family:Arial;
+	font-size:18px;
+}
+ul li {
+	padding-bottom:10px;
+}
+</style>
+
+<h1>Kodexy v0.8.1 Documentation</h1>
+
+<p>This documentation applies to version 0.8.1 of Kodexy. It is currently in beta.</p>
+
+<h2>Why Kodexy?</h2>
+
+<p>Kodexy is very minimal. It's almost like vanilla PHP, but with a few niceties:</p>
+
+<ul>
+	<li>Clean URL routing</li>
+	<li>Separation of business logic from presentation logic</li>
+	<li>PDO database helper class</li>
+	<li>Security (SQL injection, XSS, CSRF)</li>
+	<li>Utility functions</li>
+	<li>Session management</li>
+	<li>Form handling</li>
+	<li>Pagination</li>
+</ul>
+
+<h2>Requirements for running Kodexy v0.8.1</h2>
+
+<ul>
+	<li>Apache (httpd)</li>
+	<li>Apache rewrite_module</li>
+	<li>PHP 5.3.0+</li>
+	<li>PHP PDO (for database interaction)</li>
+	<li>ANSI (or UTF-8 without BOM) file encoding</li>
+</ul>
+
+<p>Kodexy v0.8.1 has been tested using <a href="http://www.wampserver.com/en/">WampServer</a> running Apache 2.4.4, MySQL 5.5 and PHP 5.4.12.</p>
+
+<h2>Installation</h2>
+
+<ol>
+	<li>Set <code>RewriteBase</code> within <code>.htaccess</code> to the location of your application (simply "/" for the root directory).</li>
+	<li>Fill in <code>config.php</code>. Each setting is commented in the file.</li>
+	<li>You're done. Go to your application (e.g. <code>http://localhost/</code>) and check that the Kodexy home page loads.</li>
+</ol>
+
+<h2>Basics</h2>
+
+<p>A request arrives at the server. The server executes <code>.htaccess</code> which re-routes the request to <code>index.php</code>. This file loads the Kodexy framework. The framework chooses a controller based on the URL to handle the request. This controller performs its logic and may load a view to output a page. Views are output rendering files.</p>
+
+<h2>Creating a Page</h2>
+
+<p>We'll create an "About Us" page to demonstrate. First create a file called <code>about.php</code> within the <code>controllers</code> directory. Place the following code within it:</p>
+
+<pre>
+&lt;?php
+
+$data = array();
+Kodexy::loadView('about', $data);
+</pre>
+
+<p>This code loads a view called <code>about</code> which corresponds to the file: <code>views/about.php</code>. Create this view file and place the following code in it:</p>
+
+<pre>
+&lt;?php Kodexy::loadView('templates/header'); ?&gt;
+
+&lt;p&gt;Example About Us page.&lt;/p&gt;
+
+&lt;?php Kodexy::loadView('templates/footer'); ?&gt;
+</pre>
+
+<p>Now open <code>http://localhost/about</code>. Kodexy will search for a controller named <code>about</code> due to the first URL segment. It will load <code>controllers/about.php</code> which in turn loads <code>views/about.php</code>. The <code>about</code> view additionally loads the <code>templates/header</code> and <code>templates/footer</code> views.</p>
+
+<p>Any URL segments found after a controller name are counted as page parameters. For example, if the URL <code>http://localhost/about/12/56</code> were requested, the controller could access these parameters via <code>Router::getParam(0)</code> and <code>Router::getParam(1)</code>. This is cleaner than using the traditional GET variable system, e.g. <code>http://localhost/about?param1=12&amp;param2=56</code>.</p>
+
+<p>Controllers can also be within sub-folders of the <code>controllers</code> folder. The controller: <code>controllers/test/page.php</code> would be accessed via <code>http://localhost/test/page</code>. As a special case, <code>controllers/test/index.php</code> can be accessed via <code>http://localhost/test</code> (no parameters allowed) or <code>http://localhost/test/index</code> (parameters allowed).</p>
+
+<p>Variables can be passed to views in an array as the second parameter to <code>Kodexy::loadView</code>. Keys are variable names and values are values.</p>
+
+<h2>Databases</h2>
+
+<p>Kodexy enables developers to interact with databases using PDO. Database connection details can be specified in <code>config.php</code>. The code below shows a database query.</p>
+
+<pre>
+Database::getRows('SELECT * FROM posts WHERE user_id = ? ORDER BY posted DESC LIMIT ?', 
+	array($user_id, $limit));
+</pre>
+
+<p><code>getRows</code> returns results from a SELECT statement (see also <code>getRow</code>, <code>getColumn</code> and <code>execute</code> in <code>system/Database.php</code>). The first argument is the SQL to be executed. Question marks are used as placeholders for values. This way, PDO can escape the values for security before sending them to the database. Placeholder values are passed in an array as the second argument to <code>getRows</code>.</p>
+
+<p>In this example, if <code>$user_id = 5</code> and <code>$limit = 10</code> then the final form of the SQL statement would be: <code>SELECT * FROM posts WHERE user_id = 5 ORDER BY posted DESC LIMIT 10</code>.</p>
+
+<h2>Code</h2>
+
+<p>The <code>code</code> folder is for common classes and functions, libraries and other pieces of code that may be needed by the application. Files from this folder can be loaded by calling: <code>loadCode('example')</code>. This call would load the file: <code>code/example.php</code>.</p>
+
+<h2>Form Validation</h2>
+
+<p>Kodexy aids in handling forms. We'll create a simple form to demonstrate. Create a controller and a view and place the following in the view:</p>
+
+<pre>
+&lt;?php Kodexy::loadView('templates/header'); ?&gt;
+
+&lt;form method="post"&gt;
+
+	&lt;?php 
+	Kodexy::loadView('system/forms/csrf');
+	Kodexy::loadView('system/forms/errors'); 
+	?&gt;
+
+	&lt;label for="edit-username"&gt;Username&lt;/label&gt;&lt;br /&gt;
+	&lt;?php
+	Kodexy::loadView('system/forms/textField', array(
+		'name' =&gt; 'username',
+	));
+	?&gt;&lt;br /&gt;&lt;br /&gt;
+
+	&lt;label for="edit-email"&gt;Email&lt;/label&gt;&lt;br /&gt;
+	&lt;?php
+	Kodexy::loadView('system/forms/textField', array(
+		'name' =&gt; 'email',
+	));
+	?&gt;&lt;br /&gt;&lt;br /&gt;
+
+	&lt;input type="submit" value="Submit" /&gt;
+
+&lt;/form&gt;
+
+&lt;?php Kodexy::loadView('templates/footer'); ?&gt;
+</pre>
+
+<p>The <code>system/forms/csrf</code> view creates a hidden form variable for the CSRF token, for security purposes. This token is validated by the <code>FormHandler</code> class when <code>FormHandler::isErrors</code> is called. The <code>system/forms/errors</code> view prints a list of validation errors for the form if there are any. The <code>system/forms/textField</code> view is one of a number of views dedicated to outputting form elements. It outputs a <code>text</code> input and will do some basic handling - including adding an "error" class to the field when it has validation errors and re-populating the field in such cases. Open the view to see what variables it requires.</p>
+
+<p>Open the controller for the form. Place the following code within it:</p>
+
+<pre>
+&lt;?php
+
+if(count($_POST))
+{
+	//validate
+	if($_POST['username'] == '')
+	{
+		FormHandler::addError('username', 'Username is required.');
+	}
+	if(!FormHandler::isValidEmail($_POST['email']))
+	{
+		FormHandler::addError('email', 'Please provide a valid email address.');
+	}
+	
+	if(FormHandler::isErrors())
+	{
+		Kodexy::loadView('myform'); //re-load form
+	}
+	else
+	{
+		//success, do something.
+		
+		Kodexy::addMessage('Form submitted successfully.');
+		Router::redirect('');
+	}
+}
+else
+{
+	//my form
+	Kodexy::loadView('myform');
+}
+</pre>
+
+<p><code>FormHandler::addError</code> takes two arguments - the HTML name for the field and the error message being logged. The <code>FormHandler</code> class also provides a few utility functions, one of which, <code>isValidEmail</code>, is shown above.</p>
+
+<h2>Pagination</h2>
+
+<p>Pagination (e.g. &laquo;first 1 2 3 last&raquo;) can be achieved using the <code>system/pager</code> view. Open the view for a description of each required variable.</p>
+
+<pre>
+&lt;?php 
+Kodexy::loadView('system/pager', array(
+	'page' => $page,
+	'perPage' => 10,
+	'numRows' => $numRows,
+	'url' => BASE_URL.'index/{page}',
+));
+?&gt;
+</pre>
+
+<h2>Further Details</h2>
+
+<p>Developers are encouraged to read the code and comments in the <code>system</code> folder for further details and other useful methods not mentioned here.</p>
+
+<h2>Other</h2>
+
+<ul>
+	<li><code>Kodexy::loadView</code> and <code>Kodexy::loadCode</code> are case sensitive.</li>
+	<li>The filter function <code>xss</code> is automatically applied to data passed to views. <code>unxss</code> can be used to reverse this.</li>
+	<li>All views can be modified, including those in the <code>views/system</code> folder. Kodexy core files within the <code>system</code> folder should not be modified to aid upgrading Kodexy.</li>
+	<li>The <code>BASE_URL</code> constant can be used to print absolute hyperlinks. It is set within <code>config.php</code>. The <code>APP_PATH</code> constant can be used for absolute server addresses, e.g. <code>C:/server/www/</code>. It is automatically detected. Both include a trailing forward slash.</li>
+	<li>The <code>uploads</code> folder can be used to store user-uploaded and downloadable files, however direct public access is prohibited via <code>.htaccess</code>. Access to these files can be provided via <code>Router::displayFile</code> and downloads via <code>Router::forceDownload</code> (located in <code>system/Router.php</code>).</li>
+	<li><code>$_POST</code> and <code>$_FILES</code> can be used directly for accessing form data.</li>
+	<li>Kodexy automatically creates a session for each request and <code>$_SESSION</code> can be used directly.</li>
+	<li>Code to be run automatically for every request can be placed in <code>startup.php</code>.</li>
+	<li>It is possible to redirect to another page using the <code>Router::redirect</code> method.</li>
+	<li>Messages can be shown for the next page request using <code>Kodexy::addMessage</code> and <code>Kodexy::addErrorMessage</code>. Commonly this is followed by a call to <code>Router::redirect</code>. These messages are displayed by loading the view: <code>system/messages</code>.</li>
+	<li>It is possible to load views within views. This is handy for loading templates and common snippets of rendering code.</li>
+	<li>For routing, URL dashes are internally converted to underscores by Kodexy when loading controllers.</li>
+</ul>
+
+<h2>Example</h2>
+
+<p>The source code for a simple blog created with Kodexy v0.8.1 is available here: <code>documentation/myblog.zip</code>. The login password is "pass123".</p>
+
+<h2>Upgrading</h2>
+
+<p>See also the changelog.txt</p>
+
+<p><strong>v0.8 to v0.8.1</strong></p>
+
+<ul>
+	<li>Remove all calls to <code>xss</code> within views - view data is now auto-filtered. Alternatively turn off auto-filtering in the config (not recommended).</li>
+	<li>Rewrite code the relies on indexed columns from database queries. Kodexy now uses <code>PDO::FETCH_ASSOC</code> instead of <code>PDO::FETCH_BOTH</code>.</li>
+	<li>Rewrite calls to <code>FormHandler::renderAttributes</code> to <code>renderHtmlAttributes</code>.</li>
+	<li>Rewrite calls to <code>FormHandler::validEmail</code> to <code>FormHandler::isValidEmail</code>.</li>
+	<li>Forms have changed, see v0.8.1 documentation.</li>
+	<li>Rewrite view templates and controllers to use <code>Kodexy::$pageHead</code> and <code>Kodexy::$pageTitle</code> instead of <code>_head</code> and <code>_title</code> in loadView.
+	<li><code>DbModel</code> has been removed. Rewrite database queries to use the <code>Database</code> class instead.</li>
+	<li>The <code>Session</code> class is now loaded in <code>startup.php</code>. Adjust any custom session management.</li>
+</ul>
+
+<p><strong>v0.7 to v0.8</strong></p>
+
+<p>
+Upgrading is not required - there are no essential security updates. Kodexy v0.8 is a complete re-write and is very different from v0.7. Upgrading can only be done manually by reading the v0.8 documentation and editing as appropriate.
+</p>
+
+<p><strong>v0.7</strong></p>
+
+<p>This is the first version of Kodexy, so there is no need for documentation on upgrading from older versions.</p>
+
+<h2>The End</h2>
+
+<p>Kodexy v0.8.1, released March 18th, 2014, developed by Matt Larsen.</p>
+
+<p>Web: <a href="http://perthcomputing.com/projects/kodexy">perthcomputing.com</a><br />
+Email: <a href="mailto:support@perthcomputing.com">support@perthcomputing.com</a></p>
+<p style="font-style:italic;">This is a beta version, so please let me know if you find any bugs or possible areas of improvement.</p>
+<p><a href="../license.txt">License</a></p>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+v0.8.1, 2014-03-18
+------------------------
+
+- xss function can now accept arrays
+- improved xss security (text encoding)
+- auto xss filtering by loadView.
+- unxss function made available.
+- database getRows and getRow now return PDO::FETCH_ASSOC (associative array), not PDO::FETCH_BOTH (associative array + indexed columns).
+- critical errors are now logged using error_log.
+- removed session auto logout and redirect.
+- moved FormHandler::renderAttributes to generic standalone utility function renderHtmlAttributes.
+- validEmail renamed isValidEmail.
+- form elements now referenced by HTML name instead of unique reference string.
+- form elements now get auto-generated HTML id, unless overriden.
+- changes to system/forms/* views.
+- created private folder to hold documentation (enables documentation to stay with the application).
+- Kodexy::$pageHead and Kodexy::$pageTitle now used instead of _head and _title in loadView.
+- removed DbModel.
+- Session class is now loaded in startup.php
+
+v0.8, 2014-02-25
+------------------------
+
+- Complete rewrite.
+
+v0.7, 2014-01-02
+------------------------
+
+- First publicly released version.

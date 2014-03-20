@@ -1,0 +1,1 @@
+<input type="hidden" name="_csrf" value="<?php echo Session::getCsrfToken(); ?>" />
