@@ -1,4 +1,4 @@
-Kodexy PHP Framework, v0.8.1, developed by Matt Larsen. Released in the public domain; free for any purpose, commercial or private.
+Kodexy PHP Framework, developed by Matt Larsen. Released in the public domain; free for any purpose, commercial or private.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
@@ -8,4 +8,4 @@ OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
-http://perthcomputing.com/projects/kodexy
+http://github.com/mattlarsen/kodexy

@@ -14,33 +14,33 @@
 
 $attributes = isset($attributes) ? $attributes : array();
 $errorClass = isset($errorClass) ? $errorClass : 'error';
-$id = isset($id) ? $id : FormHandler::convertNameToId($name, $value);
+$id = isset($id) ? $id : kodexy()->formHandler->convertNameToId($name, $value);
 $attributes['id'] = $id;
 
-if(FormHandler::isErrors($name))
+if (kodexy()->formHandler->isErrors($name))
 {
-	$attributes['class'] = isset($attributes['class']) ? $attributes['class'] : '';
-	$attributes['class'] = ' '.$errorClass;
+    $attributes['class'] = isset($attributes['class']) ? $attributes['class'] : '';
+    $attributes['class'] = ' '.$errorClass;
 }
 
-$checked = FALSE;
+$checked = false;
 
-$postedValue = FormHandler::getPost($name);
-if(!count($_POST))
+$postedValue = kodexy()->formHandler->getPost($name);
+if (!count($_POST))
 {
-	$checked = isset($default) && $default;
+    $checked = isset($default) && $default;
 }
 else
 {
-	if(!is_array($postedValue))
-	{
-		$postedValue = array($postedValue);
-	}
-	
-	if(in_array($value, $postedValue))
-	{
-		$checked = TRUE;
-	}
+    if (!is_array($postedValue))
+    {
+        $postedValue = array($postedValue);
+    }
+    
+    if (in_array($value, $postedValue))
+    {
+        $checked = true;
+    }
 }
 
 ?><input type="radio" name="<?php echo $name; ?>" value="<?php echo $value; ?>" <?php echo $checked ? 'checked="checked"' : ''; ?> <?php echo renderHtmlAttributes(unxss($attributes)); ?> />

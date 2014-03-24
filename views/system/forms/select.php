@@ -14,25 +14,25 @@
 
 $attributes = isset($attributes) ? $attributes : array();
 $errorClass = isset($errorClass) ? $errorClass : 'error';
-$id = isset($id) ? $id : FormHandler::convertNameToId($name);
+$id = isset($id) ? $id : kodexy()->formHandler->convertNameToId($name);
 $attributes['id'] = $id;
 
-if(FormHandler::isErrors($name))
+if (kodexy()->formHandler->isErrors($name))
 {
-	$attributes['class'] = isset($attributes['class']) ? $attributes['class'] : '';
-	$attributes['class'] = ' '.$errorClass;
+    $attributes['class'] = isset($attributes['class']) ? $attributes['class'] : '';
+    $attributes['class'] = ' '.$errorClass;
 }
 
-$value = FormHandler::getPost($name);
-$defaultValue = isset($defaultValue) ? $defaultValue : NULL;
+$value = kodexy()->formHandler->getPost($name);
+$defaultValue = isset($defaultValue) ? $defaultValue : null;
 
-if(!count($_POST))
+if (!count($_POST))
 {
-	$value = $defaultValue;
+    $value = $defaultValue;
 }
 
 ?><select name="<?php echo $name; ?>" <?php echo renderHtmlAttributes($attributes); ?>>
-	<?php foreach ($options as $optValue => $optText): ?>
-	<option value="<?php echo $optValue; ?>" <?php echo $value !== NULL && $optValue == $value ? 'selected="selected"' : ''; ?>><?php echo $optText; ?></option>
-	<?php endforeach; ?>
+    <?php foreach ($options as $optValue => $optText): ?>
+    <option value="<?php echo $optValue; ?>" <?php echo $value !== null && $optValue == $value ? 'selected="selected"' : ''; ?>><?php echo $optText; ?></option>
+    <?php endforeach; ?>
 </select>

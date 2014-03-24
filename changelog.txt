@@ -1,3 +1,14 @@
+v0.8.2, 2014-03-24
+------------------------
+
+- Converted all system classes back to instance classes instead of static classes.
+- Added the top-level namespace "Kodexy" to all system classes.
+- Fixed bug with session configuration - moved to startup.php
+- Added bootstrap.php to remove procedural code from Kodexy.php
+- General tidy of code as per PHP FIG standards. Notably converted tabs to spaces.
+- Changed config, pageTitle and pageHead to get/set methods.
+- Renamed the "uploads" folder to "files" (more generic).
+
 v0.8.1, 2014-03-18
 ------------------------
 
@@ -14,7 +25,7 @@ v0.8.1, 2014-03-18
 - form elements now get auto-generated HTML id, unless overriden.
 - changes to system/forms/* views.
 - created private folder to hold documentation (enables documentation to stay with the application).
-- Kodexy::$pageHead and Kodexy::$pageTitle now used instead of _head and _title in loadView.
+- kodexy()->pageHead and kodexy()->pageTitle now used instead of _head and _title in loadView.
 - removed DbModel.
 - Session class is now loaded in startup.php
 

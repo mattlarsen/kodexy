@@ -9,13 +9,13 @@
  */
 
 $lastPage = ceil($numRows / $perPage) - 1;
-if($lastPage == -1)
+if ($lastPage == -1)
 {
-	$lastPage = 0;
+    $lastPage = 0;
 }
 ?>
 
-<?php if($page != 0): ?>
+<?php if ($page != 0): ?>
  <a href="<?php echo str_replace('{page}', 0, $url); ?>">&laquo;first</a> 
 <?php else: ?>
  &laquo;first 
@@ -23,21 +23,21 @@ if($lastPage == -1)
 
 <?php 
 $i = $page-2;
-if($i < 0)
+if ($i < 0)
 {
-	$i = 0;
+    $i = 0;
 }
 ?>
 
-<?php while($i <= ($page+2) && $i <= $lastPage): ?>
-<?php if($i != $page): ?>
+<?php while ($i <= ($page+2) && $i <= $lastPage): ?>
+<?php if ($i != $page): ?>
  <a href="<?php echo str_replace('{page}', $i, $url); ?>"><?php echo $i+1; ?></a> 
 <?php else: ?>
  <?php echo $i+1; ?> 
 <?php endif; ?>
 <?php $i++; endwhile; ?>
 
-<?php if($page != $lastPage): ?>
+<?php if ($page != $lastPage): ?>
  <a href="<?php echo str_replace('{page}', $lastPage, $url); ?>">last&raquo;</a> 
 <?php else: ?>
  last&raquo; 

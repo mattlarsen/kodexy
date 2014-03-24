@@ -1,9 +1,9 @@
 <?php
 
 /*======================================
-Kodexy Framework v0.8.1
+Kodexy Framework v0.8.2
 Author: Matt Larsen
-Web: perthcomputing.com/projects/kodexy
+Web: github.com/mattlarsen/kodexy
 ======================================*/
 
 /**
@@ -11,27 +11,38 @@ Web: perthcomputing.com/projects/kodexy
  */
 
 /**
+ * Returns the main Kodexy instance.
+ */
+function kodexy()
+{
+    global $kodexy;
+    return $kodexy;
+}
+
+/**
  * Merges the values of multiple arrays into one array ignoring keys.
  */
 function mergeValues(/*arrays to merge*/)
 {
-	$arrays = func_get_args();
-	$all = array();
-	
-	foreach ($arrays as $array)
-	{
-		if(count($array))
-		foreach ($array as $val)
-		{
-			$all[] = $val;
-		}
-	}
-	
-	return $all;
+    $arrays = func_get_args();
+    $all = array();
+    
+    foreach ($arrays as $array)
+    {
+        if (count($array))
+        foreach ($array as $val)
+        {
+            $all[] = $val;
+        }
+    }
+    
+    return $all;
 }
 
 /**
  * Formats bytes as B, KB, MB, GB, or TB appropriately for output.
+ * @param $bytes
+ * @param $precision - decimal places
  */
 function formatBytes($bytes, $precision = 2) 
 { 
@@ -40,9 +51,9 @@ function formatBytes($bytes, $precision = 2)
     $bytes = max($bytes, 0); 
     $pow = floor(($bytes ? log($bytes) : 0) / log(1024)); 
     $pow = min($pow, count($units) - 1); 
-	
+    
     $bytes /= pow(1024, $pow);
-	
+    
     return round($bytes, $precision).' '.$units[$pow]; 
 }
 
@@ -52,19 +63,19 @@ function formatBytes($bytes, $precision = 2)
  */
 function xss($data)
 {
-	if(is_array($data))
-	{
-		foreach ($data as &$var)
-		{
-			$var = xss($var);
-		}
-	}
-	else
-	{
-		return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
-	}
-	
-	return $data;
+    if (is_array($data))
+    {
+        foreach ($data as &$var)
+        {
+            $var = xss($var);
+        }
+    }
+    else
+    {
+        return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
+    }
+    
+    return $data;
 }
 
 /**
@@ -73,46 +84,48 @@ function xss($data)
  */
 function unxss($data)
 {
-	if(is_array($data))
-	{
-		foreach ($data as &$var)
-		{
-			$var = unxss($var);
-		}
-	}
-	else
-	{
-		return html_entity_decode($data, ENT_QUOTES, 'UTF-8');
-	}
-	
-	return $data;
+    if (is_array($data))
+    {
+        foreach ($data as &$var)
+        {
+            $var = unxss($var);
+        }
+    }
+    else
+    {
+        return html_entity_decode($data, ENT_QUOTES, 'UTF-8');
+    }
+    
+    return $data;
 }
 
 /**
  * Generates a random string of a given length.
+ * @param $length
  */
 function randomString($length)
 {
-	$chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijqlmnopqrtsuvwxyz0123456789';
-	$max = strlen($chars)-1;
+    $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijqlmnopqrtsuvwxyz0123456789';
+    $max = strlen($chars)-1;
 
-	$string = '';
-	for ($i=0; $i<$length; $i++)
-	{
-		$rand = (int)mt_rand(0.0, $max);
-		$string .= $chars[$rand];
-	}
-	
-	return $string;
+    $string = '';
+    for ($i=0; $i<$length; $i++)
+    {
+        $rand = (int)mt_rand(0.0, $max);
+        $string .= $chars[$rand];
+    }
+    
+    return $string;
 }
 
 /**
  * Returns the file extension for the given filename.
+ * @param $filename
  */
 function getFileExtension($filename)
 {
-	$bits = explode('.', $filename);
-	return strtolower(end($bits));
+    $bits = explode('.', $filename);
+    return strtolower(end($bits));
 }
 
 /**
@@ -120,10 +133,10 @@ function getFileExtension($filename)
  */
 if (!function_exists('http_response_code'))
 {
-	function http_response_code($httpStatusCode = 200)
-	{
-		header('X-PHP-Response-Code: '.$httpStatusCode, TRUE, $httpStatusCode);
-	}
+    function http_response_code($httpStatusCode = 200)
+    {
+        header('X-PHP-Response-Code: '.$httpStatusCode, true, $httpStatusCode);
+    }
 }
 
 /**
@@ -132,12 +145,12 @@ if (!function_exists('http_response_code'))
  */
 function renderHtmlAttributes($attributes)
 {
-	//render
-	$attributesHtml = '';
-	foreach ($attributes as $attribute => $value)
-	{
-		$attributesHtml .= $attribute.'="'.$value.'" ';
-	}
-	
-	return $attributesHtml;
+    //render
+    $attributesHtml = '';
+    foreach ($attributes as $attribute => $value)
+    {
+        $attributesHtml .= $attribute.'="'.$value.'" ';
+    }
+    
+    return $attributesHtml;
 }

@@ -1,14 +1,20 @@
 <?php
 
 /*======================================
-Kodexy Framework v0.8.1
+Kodexy Framework v0.8.2
 Author: Matt Larsen
-Web: perthcomputing.com/projects/kodexy
+Web: github.com/mattlarsen/kodexy
 ======================================*/
 
 /**
- *	Application startup file: code that should be run for every request before the relevant controller is executed.
+ * Application startup file: code that should be run for every request before the relevant controller is executed.
  */
 
+//session config
+ini_set('session.gc_probability', '1');
+ini_set('session.gc_divisor', '100');
+ini_set('session.gc_maxlifetime', '1800');
+//optional: session_set_save_handler(...)
+
 //initialize Kodexy Session class.
-Session::init();
+kodexy()->session->init();

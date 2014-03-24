@@ -12,13 +12,13 @@
 
 $attributes = isset($attributes) ? $attributes : array();
 $errorClass = isset($errorClass) ? $errorClass : 'error';
-$id = isset($id) ? $id : FormHandler::convertNameToId($name);
+$id = isset($id) ? $id : kodexy()->formHandler->convertNameToId($name);
 $attributes['id'] = $id;
 
-if(FormHandler::isErrors($name))
+if (kodexy()->formHandler->isErrors($name))
 {
-	$attributes['class'] = isset($attributes['class']) ? $attributes['class'] : '';
-	$attributes['class'] = ' '.$errorClass;
+    $attributes['class'] = isset($attributes['class']) ? $attributes['class'] : '';
+    $attributes['class'] = ' '.$errorClass;
 }
 
 ?><input type="password" name="<?php echo $name; ?>" <?php echo renderHtmlAttributes(unxss($attributes)); ?> />

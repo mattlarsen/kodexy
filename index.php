@@ -1,14 +1,13 @@
 <?php
 
 /*======================================
-Kodexy Framework v0.8.1
+Kodexy Framework v0.8.2
 Author: Matt Larsen
-Web: perthcomputing.com/projects/kodexy
+Web: github.com/mattlarsen/kodexy
 ======================================*/
 
 /**
- *	Kodexy bootstrap file.
+ * Kodexy application entry point.
  */
 
-require('system/Kodexy.php');
-Kodexy::bootstrap();
+require('system/bootstrap.php');

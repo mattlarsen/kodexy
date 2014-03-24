@@ -1,4 +1,4 @@
 <?php
 
 $data = array();
-Kodexy::loadView('index', $data);
+kodexy()->loadView('index', $data);
